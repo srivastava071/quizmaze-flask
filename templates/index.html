@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QuizMaze</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header-bar">
+    <div class="logo-title">
+      <a href="{{ url_for('home') }}" class="logo-link" aria-label="Go to Homepage">
+        <img src="{{ url_for('static', filename='photos/logo.png') }}" alt="QuizMaze Logo" class="logo" />
+        <h2>QuizMaze</h2>
+      </a>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="{{ url_for('home') }}">Home</a></li>
+        <li><a href="{{ url_for('play') }}">Play</a></li>
+        <li><a href="{{ url_for('create') }}">Create Quiz</a></li>
+        <li><a href="{{ url_for('login') }}">Login</a></li>
+        <li><a href="{{ url_for('about') }}">About</a></li>
+        <li>
+          <div class="dark-toggle-container">
+            <label class="switch">
+              <input type="checkbox" id="darkModeToggle">
+              <span class="slider round"></span>
+            </label>
+            <span id="modeLabel">Theme</span>
+          </div>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Build your brain with <span>QuizMaze</span> 🧠</h1>
+      <p>Explore smart quizzes structured with DSA logic. Navigate knowledge like a decision tree — level up with every answer.</p>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="num">50+</div>
+          <div class="label">Questions</div>
+        </div>
+        <div class="stat-item">
+          <div class="num">3</div>
+          <div class="label">Categories</div>
+        </div>
+        <div class="stat-item">
+          <div class="num">10s</div>
+          <div class="label">Per Round</div>
+        </div>
+      </div>
+      <a href="{{ url_for('play') }}"><button>Start Quiz ➡️</button></a>
+    </div>
+    <div class="hero-img">
+      <img src="{{ url_for('static', filename='photos/pic1.png') }}" alt="quiz illustration" />
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features">
+    <h2>Why <span class="accent">QuizMaze?</span></h2>
+    <p class="features-subtitle">Everything you need for a next-level quiz experience</p>
+    <div class="card-container">
+      <div class="card">
+        <h3>🔗 Based on DSA</h3>
+        <p>Uses tree and graph logic to structure your quiz intelligently.</p>
+      </div>
+      <div class="card">
+        <h3>🧠 Learn as You Go</h3>
+        <p>Explore topics while answering, like a decision-based journey.</p>
+      </div>
+      <div class="card">
+        <h3>🎨 Custom Quizzes</h3>
+        <p>Create and share your own quizzes using the visual editor.</p>
+      </div>
+      <div class="card">
+        <h3>⏱ Timed Challenges</h3>
+        <p>10-second rounds keep you sharp and on your toes.</p>
+      </div>
+      <div class="card">
+        <h3>📊 Score Tracker</h3>
+        <p>Leaderboard keeps competition alive. Climb to the top.</p>
+      </div>
+      <div class="card">
+        <h3>🌙 Dark Mode</h3>
+        <p>Beautiful dark-first design. Easy on the eyes, day or night.</p>
+      </div>
+      <div class="card">
+        <h3>🔐 Secure Login</h3>
+        <p>User accounts with secure authentication built in.</p>
+      </div>
+      <div class="card">
+        <h3>⚡ Instant Feedback</h3>
+        <p>Know immediately if you're right or wrong with sound &amp; color.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter -->
+  <section class="newsletter">
+    <div class="newsletter-inner">
+      <h3>Stay Updated</h3>
+      <p>Join our mailing list for new quiz packs, features, and tips!</p>
+      <div class="newsletter-form">
+        <input type="email" placeholder="your@email.com" />
+        <button>Subscribe</button>
+      </div>
+      <div class="color-picker">
+        <label for="themeColor">🎨 Theme:</label>
+        <input type="color" id="themeColor" value="#2ee8d4" />
+        <button id="resetTheme">♻️ Reset</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 QuizMaze by Himanshu Srivastava</p>
+    <p>Contact: <a href="mailto:srivastavahimanshu071@gmail.com">srivastavahimanshu071@gmail.com</a></p>
+  </footer>
+
+  <audio id="correctSound" src="{{ url_for('static', filename='audio/correct.mp3') }}" preload="auto"></audio>
+  <audio id="wrongSound" src="{{ url_for('static', filename='audio/wrong.mp3') }}" preload="auto"></audio>
+  <audio id="bgMusic" src="{{ url_for('static', filename='quiz-music-158558.mp3') }}" loop></audio>
+
+  <button id="musicToggle">🔊 Music</button>
+  <a href="{{ url_for('chatbot') }}" class="chatbot-button" title="Chat with us!">💬</a>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+  <script>
+    // Music toggle
+    const music = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicToggle');
+    let playing = false;
+    musicBtn.addEventListener('click', () => {
+      playing = !playing;
+      playing ? music.play() : music.pause();
+      musicBtn.textContent = playing ? '🔇 Mute' : '🔊 Music';
+    });
+
+    // Color picker
+    const cp = document.getElementById('themeColor');
+    cp.addEventListener('input', e => {
+      document.documentElement.style.setProperty('--teal', e.target.value);
+    });
+    document.getElementById('resetTheme').addEventListener('click', () => {
+      document.documentElement.style.setProperty('--teal', '#2ee8d4');
+      cp.value = '#2ee8d4';
+    });
+  </script>
+</body>
+</html>
