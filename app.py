@@ -1,3 +1,4 @@
+from os import getenv
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
@@ -6,7 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'quizmaze_secret_key'
 
-database_url = os.getenv("DATABASE_URL", "sqlite:///quizmaze.db")
+database_url = getenv("DATABASE_URL", "sqlite:///quizmaze.db")
 if database_url.startswith("postgres://"):
     database_url = database_url.replace("postgres://", "postgresql://", 1)
 
