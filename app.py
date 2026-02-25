@@ -9,6 +9,8 @@ app.config['SECRET_KEY'] = 'quizmaze_secret_key'
 database_url = os.getenv("DATABASE_URL", "sqlite:///quizmaze.db")
 if database_url.startswith("postgres://"):
     database_url = database_url.replace("postgres://", "postgresql://", 1)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
@@ -37,8 +39,17 @@ class Question(db.Model):
     option3 = db.Column(db.String(200), nullable=False)
     option4 = db.Column(db.String(200), nullable=False)
     correct = db.Column(db.Integer, nullable=False)
-with app.app_context():
-    db.create_all()
+
+def initialize_database():
+    with app.app_context():
+        db.create_all()
+
+
+try:
+    initialize_database()
+except Exception:
+    app.logger.exception("Database initialization failed during startup.")
+    
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
